@@ -15,7 +15,13 @@
 
     <p><span class="label">SSH tunnel URL:</span> {{ url }}</p>
 
-    <p><span class="label">&gt; $</span> ssh {{ domain }} -p {{ port }} <a id="copy" onclick="copy()">(copy)</a></p>
+    <p>
+        <span class="label">&gt; $</span>
+        ssh <span id="ssh-username"></span>{{ domain }} -p {{ port }}
+        <a class="text-button" id="copy" onclick="copy()">(copy)</a>
+        <br>
+        <a class="text-button" onclick="configureSshUser()">(configure username)</a>
+    </p>
 
     <style>
         body {
@@ -36,7 +42,7 @@
             text-decoration: none;
         }
 
-        a#copy{
+        a.text-button{
             opacity: 40%;
             margin-left: 15px;
             cursor: pointer;
@@ -44,14 +50,30 @@
     </style>
 
     <script lang="js">
+        function getCookie(name) {
+            var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            if (match) return match[2];
+        }
+
         function copy() {
-            navigator.clipboard.writeText("ssh {{ domain }} -p {{ port }}");
+            const sshUser = getCookie("ssh-user");
+            navigator.clipboard.writeText(`ssh ${sshUser !== undefined && sshUser.length > 0 ? sshUser + "@" : ""}{{ domain }} -p {{ port }}`);
             const el = document.getElementById("copy");
             el.innerText = "(copied)";
             setTimeout(() => {
                 el.innerText = "(copy)";
             }, 1000);
         }
+
+        function configureSshUser() {
+            const sshUser = prompt("SSH username: (leave empty to delete) ", "");
+            if (sshUser !== null) document.cookie = `ssh-user=${sshUser};`;
+            window.location.reload();
+        }
+
+        // inject ssh user
+        const sshUser = getCookie("ssh-user");
+        if (sshUser !== undefined && sshUser.length > 0) document.getElementById("ssh-username").innerText = `${sshUser}@`;
     </script>
 
 </body>
