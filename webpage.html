@@ -66,8 +66,9 @@
         }
 
         function configureSshUser() {
-            const sshUser = prompt("SSH username: (leave empty to delete) ", "");
-            if (sshUser !== null) document.cookie = `ssh-user=${sshUser};`;
+            const sshUser = prompt("SSH username: (leave empty to delete) ", getCookie("ssh-user"));
+            if (sshUser !== null && sshUser.length > 0) document.cookie = `ssh-user=${sshUser};`;
+            else document.cooke = "ssh-user=;";
             window.location.reload();
         }
 
