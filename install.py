@@ -44,8 +44,9 @@ def main():
         )
     os.chmod("./start.sh", 0o755)
     
-    # install source files
+    # install source files and revert local changes
     shutil.copytree('.', install_dir, dirs_exist_ok=True)
+    os.remove("./start.sh")
 
     print(f"auto_ngrok installed at {install_dir}...")
 

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>auto-ngrok | {{ device }}</title>
+</head>
+<body>
+
+    <p style="font-size: 150%">
+        &#x1F680;
+        <a href="https://github.com/JupiterPi/auto-ngrok" target="_blank">auto-ngrok</a>
+        <span class="label">running on</span> {{ device }}
+    </p>
+
+    <p><span class="label">Timestamp: {{ timestamp }}</span></p>
+
+    <p><span class="label">SSH tunnel URL:</span> {{ url }}</p>
+
+    <p><span class="label">&gt; $</span> ssh {{ domain }} -p {{ port }} <a id="copy" onclick="copy()">(copy)</a></p>
+
+    <style>
+        body {
+            font-family: monospace;
+            padding: 10px 15px;
+            background: rgb(19, 13, 58);
+            color: white;
+            font-weight: 700;
+            font-size: 130%;
+        }
+
+        .label {
+            opacity: 40%;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        a#copy{
+            opacity: 40%;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script lang="js">
+        function copy() {
+            navigator.clipboard.writeText("ssh {{ domain }} -p {{ port }}");
+            const el = document.getElementById("copy");
+            el.innerText = "(copied)";
+            setTimeout(() => {
+                el.innerText = "(copy)";
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
